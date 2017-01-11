@@ -71,6 +71,7 @@ describe('BlogPost API resource', function () {
 				res = _res;
 				res.should.have.status(200);
 				res.body.should.have.length.of.at.least(1);
+				
 				return BlogPost.count();
 			})
 			.then(function(count) {
@@ -85,7 +86,7 @@ describe('BlogPost API resource', function () {
 			.then(function(res) {
 				res.should.have.status(200);
 				res.should.be.json; 
-				res.body.should.be.a('array'); //deleted body.blogposts
+				res.body.should.be.a('array'); 
 				res.body.should.have.length.of.at.least(1);
 
 				res.body.forEach(function(blogpost) {
@@ -94,7 +95,7 @@ describe('BlogPost API resource', function () {
 						'id', 'author', 'title', 'content');
 				});
 				resBlogPosts = res.body[0];
-				return BlogPost.findById(resBlogPosts.id);
+				return BlogPost.findById(resBlogPosts.id).exec();
 			})
 			.then(function(blogpost) {
 				resBlogPosts.id.should.equal(blogpost.id);
@@ -121,7 +122,7 @@ describe('BlogPost API resource', function () {
 				res.body.author.should.equal(`${newBlogPost.author.firstName} ${newBlogPost.author.lastName}`);
 				res.body.title.should.equal(newBlogPost.title);
 				res.body.content.should.equal(newBlogPost.content)
-				return BlogPost.findById(res.body.id);
+				return BlogPost.findById(res.body.id).exec();
 			})
 			.then(function(blogpost) {
 				blogpost.author.firstName.should.equal(newBlogPost.author.firstName);
@@ -135,27 +136,38 @@ describe('BlogPost API resource', function () {
 	describe('PUT endpoint', function() {
 		it('should update blog post fields', function() {
 			const updatePost = {
+				author: {
+					firstName: 'Mary',
+					lastName: 'Poppins'
+				},
 				title: "New title",
 				content: "Supercalifragilisticexpialidotious"
 			};
 
 			return BlogPost
 			.findOne()
-			.execOne()
+			.exec()
 			.then(function(blogpost) {
 				updatePost.id = blogpost.id;
 
 				return chai.request(app)
-				.put(`/posts/$blogpost.id`)
+				.put(`/posts/${blogpost.id}`)
 				.send(updatePost);
 			})
 			.then(function(res) {
-				res.should.have.status(204);
-
-				return BlogPost.findById(updatePost.id).exec();
+				res.should.have.status(201);
+				res.should.be.json; 
+				res.body.should.be.a('object');
+				res.body.author.should.equal(`${updatePost.author.firstName} ${updatePost.author.lastName}`);
+				res.body.title.should.equal(updatePost.title);
+				res.body.content.should.equal(updatePost.content);
+				
+				return BlogPost.findById(res.body.id).exec();
 			})
 			.then(function(blogpost) {
-				blogpost.author.should.equal(updatePost.author);
+				blogpost.author.firstName.should.equal(updatePost.author.firstName);
+				blogpost.author.lastName.should.equal(updatePost.author.lastName);
+				blogpost.title.should.equal(updatePost.title);
 				blogpost.content.should.equal(updatePost.content);
 			});
 		});
@@ -174,7 +186,7 @@ describe('BlogPost API resource', function () {
 			})
 			.then(function(res) {
 				res.should.have.status(204);
-				return BlogPost.findById(blogpost.id).exec();
+				return BlogPost.findById(blogpost.id);
 			})
 			.then(function(_blogpost) {
 				should.not.exist(_blogpost);
