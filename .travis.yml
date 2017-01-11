@@ -2,3 +2,10 @@ language: node_js
 node_js: node
 services:
 - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: uBEJw7zgA9VmJ/rcp41I+U0ezFC8JOOwGvjgceGWt3B1zAds2eSpJY+6Qb5jp5ePhtdjmqfWlrgjAxLipxD8D6WMm7EKv53lsUnskUADMmSKYBTLkHXF9GTRZQAYjiLa1QlJTgP6gjEoB0zgl92nf38zfCCOKTlgnlDtRhfOcA327Z0G61kLlVZYVBCfUnqra70VG1rQHY3b/foadOoyK7RzXkkEBadm70wOP7VoqmnASqcUwiEcP/XS6C+Ki724NEKRTDqnYBAguBQrnuQzdl79j5vbMQGUJyGRkQjBKm+WZ+grtUPP3Y3dgO8B/g9qNSlNEWVZG8zkU21oVgCo7MpBD333nk42CLnBSWpMnmd1g3YFuRoiSqhbby+53MNoDaokhcf45aZDgZBAyE68ZMApBV8I3YNAGr/8aOiF3K5px8fKrfrnNac2siH/mhAl8yZzH1/KQ00loo6GSwZvC75QejDhFljK16kmcWuyT3iQZtqdOtG4a6wcogR6Q5pv1L/VW5kFTrpwtHmopHFyo057QJ912rC6jb58bdyvqjiNrftIOWZkOzanjS+sH5e4z5J86RIH7mnBYqllQ2w/hV0mi++xm0AbJeJcom+BeQP/2yNUeVKJknjGRdwa1LznRN+PcIikk6lRhq5q/hOLfggw4gaRqkb8LBzZ5GN7ONc=
+  app: obscure-dawn-15221
+  on:
+    repo: taypsl/blog-app-mongoose-challenge-solution
