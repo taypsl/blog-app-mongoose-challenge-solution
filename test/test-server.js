@@ -17,9 +17,7 @@ function seedBlogPostData() {
 	console.info('seeding blog post data')
 	const seedData = [];
 
-	for (let i=1; i<=5; i++) {
-		seedData.push(generateBlogPostData());
-	}
+	seedData.push(generateBlogPostData());
 	//return Promise
 	return BlogPost.insertMany(seedData);
 }
