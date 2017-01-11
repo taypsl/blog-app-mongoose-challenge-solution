@@ -16,12 +16,14 @@ chai.use(chaiHttp);
 function seedBlogPostData() {
 	console.info('seeding blog post data')
 	const seedData = [];
-
+	for(let i=1; i<10; i++) {
 	seedData.push(generateBlogPostData());
+	}
 	//return Promise
 	return BlogPost.insertMany(seedData);
 }
-
+//count.seedData.length
+// let count = 0
 function generateBlogPostData() {
 	return {
 		author: {
@@ -62,16 +64,17 @@ describe('BlogPost API resource', function () {
 	describe('GET endpoint', function() {
 		it('should return all existing blog posts', function() {
 			let res;
+			let count = 0;
 			return chai.request(app)
 			.get('/posts')
 			.then(function(_res) {
 				res = _res;
 				res.should.have.status(200);
-				res.body.blogposts.should.have.length.of.at.least(count);
+				res.body.should.have.length.of.at.least(1);
 				return BlogPost.count();
 			})
 			.then(function(count) {
-				res.body.blogposts.should.have.length.of(count);
+				res.body.should.have.length.of(count);
 			})
 		});
 
@@ -82,8 +85,8 @@ describe('BlogPost API resource', function () {
 			.then(function(res) {
 				res.should.have.status(200);
 				res.should.be.json; 
-				res.body.blogposts.should.be.a('array');
-				res.body.blogposts.should.have.length.of.at.least(1);
+				res.body.should.be.a('array'); //deleted body.blogposts
+				res.body.should.have.length.of.at.least(1);
 
 				res.body.blogposts.forEach(function(blogpost) {
 					blogpost.should.be.a('object');
