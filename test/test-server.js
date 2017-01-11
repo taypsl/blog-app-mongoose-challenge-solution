@@ -88,17 +88,17 @@ describe('BlogPost API resource', function () {
 				res.body.should.be.a('array'); //deleted body.blogposts
 				res.body.should.have.length.of.at.least(1);
 
-				res.body.blogposts.forEach(function(blogpost) {
+				res.body.forEach(function(blogpost) {
 					blogpost.should.be.a('object');
 					blogpost.should.include.keys(
 						'id', 'author', 'title', 'content');
 				});
-				resBlogPosts = res.body.blogposts[0];
+				resBlogPosts = res.body[0];
 				return BlogPost.findById(resBlogPosts.id);
 			})
 			.then(function(blogpost) {
 				resBlogPosts.id.should.equal(blogpost.id);
-				resBlogPosts.author.should.equal(blogpost.author);
+				resBlogPosts.author.should.equal(blogpost.authorName);
 				resBlogPosts.title.should.equal(blogpost.title);
 				resBlogPosts.content.should.equal(blogpost.content);
 			});
