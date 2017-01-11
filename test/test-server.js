@@ -113,18 +113,19 @@ describe('BlogPost API resource', function () {
 			.post('/posts')
 			.send(newBlogPost)
 			.then(function(res) {
-				res.should.have.status(204);
+				res.should.have.status(201);
 				res.should.be.json; 
 				res.body.should.be.a('object');
-				res.body.should.include.keys('id', 'author', 'title', 'content')
-				res.body.author.should.equal(newBlogPost.author);
+				res.body.should.include.keys('id', 'author', 'title', 'content');
 				res.body.id.should.not.be.null;
+				res.body.author.should.equal(`${newBlogPost.author.firstName} ${newBlogPost.author.lastName}`);
 				res.body.title.should.equal(newBlogPost.title);
 				res.body.content.should.equal(newBlogPost.content)
 				return BlogPost.findById(res.body.id);
 			})
 			.then(function(blogpost) {
-				blogpost.author.should.equal(newBlogPost.name);
+				blogpost.author.firstName.should.equal(newBlogPost.author.firstName);
+				blogpost.author.lastName.should.equal(newBlogPost.author.lastName);
 				blogpost.title.should.equal(newBlogPost.title);
 				blogpost.content.should.equal(newBlogPost.content);
 			})
