@@ -12,7 +12,8 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 
 mongoose.Promise = global.Promise;
-
+//adding temporarily to test heroku push
+app.get('/hello', (req, res) => { res.send("hello") });
 
 app.get('/posts', (req, res) => {
   BlogPost
